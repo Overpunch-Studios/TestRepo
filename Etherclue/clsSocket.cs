@@ -52,19 +52,25 @@ namespace Etherclue
                 }
             }
         }
+        
+        public void Close()
+        {
+            socket.Disconnect(false);
+        }
 
         public void Send(string msg)
         {
             byte[] message = Encoding.Default.GetBytes(msg + EOL);
             socket.Send(message, message.Length, SocketFlags.None);
-            Thread.Sleep(100);
+            Thread.Sleep(500);
         }
 
         public string Receive()
         {
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[socket.Available];
             socket.Receive(buffer, 0, socket.Available, SocketFlags.None);
-            return Encoding.Default.GetString(buffer);
+            string received = Encoding.Default.GetString(buffer, 0, buffer.Length).Replace("\0", "").Replace(EOL, "");
+            return received;
         }
 
         public bool IsConnected()

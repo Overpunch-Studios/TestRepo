@@ -15,6 +15,12 @@ namespace Etherclue
 
         }
 
+        public string GenerateKey(int length)
+        {
+            Random random = new Random();
+            return new string(Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#¤%&/()=", length).Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
         public string EncryptString(string plainText, byte[] Key)
         {
             byte[] encrypted;
