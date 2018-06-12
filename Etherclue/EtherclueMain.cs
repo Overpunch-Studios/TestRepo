@@ -33,6 +33,10 @@ namespace Etherclue
 
         private void EtherclueMain_Load(object sender, EventArgs e)
         {
+            Process[] pname = Process.GetProcessesByName(Process.GetCurrentProcess.ProcessName);
+            if(pname.Length > 0)
+                this.close();
+                
             if (!Program.debug)
             {
                 this.Hide();
